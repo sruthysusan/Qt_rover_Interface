@@ -1,0 +1,101 @@
+/********************************************************************************
+** Form generated from reading UI file 'dialog.ui'
+**
+** Created by: Qt User Interface Compiler version 5.3.1
+**
+** WARNING! All changes made in this file will be lost when recompiling UI file!
+********************************************************************************/
+
+#ifndef UI_DIALOG_H
+#define UI_DIALOG_H
+
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QScrollBar>
+
+QT_BEGIN_NAMESPACE
+
+class Ui_Dialog
+{
+public:
+    QLabel *label;
+    QLabel *roverDistlabel;
+    QLabel *roverConsoleLabels[4];
+    QScrollBar *speedScrollBar;
+
+ //https://stackoverflow.com/questions/2749798/qlabel-set-color-of-text-and-background
+    QPalette palette_RED,palette_GREEN,palette_YELLOW;
+
+
+    void setupUi(QDialog *Dialog)
+    {
+        if (Dialog->objectName().isEmpty())
+            Dialog->setObjectName(QStringLiteral("Dialog"));
+
+        palette_RED.setColor(QPalette::Window, Qt::white);
+        palette_RED.setColor(QPalette::WindowText, Qt::red);
+        palette_GREEN.setColor(QPalette::Window, Qt::white);
+        palette_GREEN.setColor(QPalette::WindowText, Qt::green);
+        palette_YELLOW.setColor(QPalette::Window, Qt::lightGray);
+
+        Dialog->resize(821, 691);
+        Dialog->setPalette(palette_YELLOW);
+        label = new QLabel(Dialog);
+        roverDistlabel=new QLabel(Dialog); // label to chart Rover distance
+
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(680, 100, 131, 21));
+        roverDistlabel->setObjectName(QStringLiteral("roverDistlabel"));
+        roverDistlabel->setGeometry(QRect(20, 100, 161, 21));
+        QFont font;
+        font.setPointSize(12);
+        label->setFont(font);
+        roverDistlabel->setFont(font);
+
+        int j =100;
+        for(int i=0;i<4;i++)
+        {
+            roverConsoleLabels[i]=new QLabel(Dialog);
+            roverConsoleLabels[i]->setGeometry(QRect(20, (j+=40), 200, 21));
+            roverConsoleLabels[i]->setFont(font);
+            roverConsoleLabels[i]->setPalette(palette_GREEN);
+        }
+
+
+        speedScrollBar = new QScrollBar(Dialog);
+        speedScrollBar->setObjectName(QStringLiteral("verticalScrollBar"));
+        speedScrollBar->setGeometry(QRect(580, 40, 91, 141));
+        speedScrollBar->setOrientation(Qt::Horizontal);
+        speedScrollBar->setSingleStep(25);
+
+        retranslateUi(Dialog);
+
+
+
+    } // setupUi
+
+    void retranslateUi(QDialog *Dialog)
+    {
+        Dialog->setWindowTitle(QApplication::translate("Dialog", "Dialog", 0));
+        label->setText(QApplication::translate("Dialog", " GEAR SHIFTER", 0));
+         roverDistlabel->setText(QApplication::translate("Dialog", "Distance from Rover =", 0));
+         roverConsoleLabels[0]->setText(QApplication::translate("Dialog", "Distance from Rover =", 0));
+         roverConsoleLabels[1]->setText(QApplication::translate("Dialog", "Distance from Obstacle =", 0));
+         roverConsoleLabels[2]->setText(QApplication::translate("Dialog", "Current Gear Setting =", 0));
+         roverConsoleLabels[3]->setText(QApplication::translate("Dialog", "Speed of Rover =", 0));
+    } // retranslateUi
+
+};
+
+namespace Ui {
+    class Dialog: public Ui_Dialog {};
+} // namespace Ui
+
+QT_END_NAMESPACE
+
+#endif // UI_DIALOG_H
