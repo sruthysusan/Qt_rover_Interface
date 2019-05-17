@@ -42,7 +42,8 @@ public:
     QPushButton *steerRight,*steerLeft,*autoManual,*goBtn;
     QSerialPort *mySerialPort;
     QByteArray *receivedData;
-;
+    int roverConsoleLabels_SIZES[8];
+
  //https://stackoverflow.com/questions/2749798/qlabel-set-color-of-text-and-background
     QPalette palette_RED,palette_GREEN,palette_YELLOW;
 
@@ -56,7 +57,7 @@ public:
         palette_RED.setColor(QPalette::WindowText, Qt::red);
         palette_GREEN.setColor(QPalette::Window, Qt::white);
         palette_GREEN.setColor(QPalette::WindowText, Qt::green);
-        palette_YELLOW.setColor(QPalette::Window, Qt::lightGray);
+        palette_YELLOW.setColor(QPalette::Window, Qt::white);
 
         Dialog->resize(821, 691);
         Dialog->setPalette(palette_YELLOW);
@@ -191,6 +192,14 @@ public:
          roverConsoleLabels[2]->setText(QApplication::translate("Dialog", "Current Gear Setting = ", 0));
          roverConsoleLabels[3]->setText(QApplication::translate("Dialog", "Speed of Rover = ", 0));
          roverConsoleLabels[4]->setText(QApplication::translate("Dialog", "Com Port Used  = ", 0));
+
+         for(int i=0;i<4;i++)
+         {
+
+             QString s =  roverConsoleLabels[i]->text();
+            roverConsoleLabels_SIZES[i] = roverConsoleLabels[i]->text().size();
+         }
+
     } // retranslateUi
 
 };
