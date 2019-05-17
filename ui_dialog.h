@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QFile>
+ #include <algorithm>
 
 QT_BEGIN_NAMESPACE
 
@@ -36,10 +37,11 @@ class Ui_Dialog
 public:
     QLabel *label,*setRRLabel;
     QLabel *roverDistlabel;
-    QLabel *roverConsoleLabels[4];
+    QLabel *roverConsoleLabels[8];
     QScrollBar *speedScrollBar,*setRoverRange;
     QPushButton *steerRight,*steerLeft,*autoManual,*goBtn;
-
+    QSerialPort *mySerialPort;
+    QByteArray *receivedData;
 ;
  //https://stackoverflow.com/questions/2749798/qlabel-set-color-of-text-and-background
     QPalette palette_RED,palette_GREEN,palette_YELLOW;
@@ -86,7 +88,7 @@ public:
         roverDistlabel->setPalette(palette_GREEN);
 
         int j =100;
-        for(int i=0;i<4;i++)
+        for(int i=0;i<5;i++)
         {
             roverConsoleLabels[i]=new QLabel(Dialog);
             roverConsoleLabels[i]->setGeometry(QRect(20, (j+=40), 200, 21));
@@ -136,16 +138,29 @@ public:
 
 // --------------------- QScrollBar END --------------------------------------------
 
-
+         retranslateUi(Dialog);
 
 // --------------------- QSerialPort Settings --------------------------------------------
-  qDebug() << "Name  :";
 
-//        foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts()){
-//               qDebug() << "Name  :" << info.portName();
-//               qDebug() << "Description  :" << info.description();
-//               qDebug() << "Manufactuer :"  << info.manufacturer();
-//        }
+        mySerialPort = new(QSerialPort);
+        receivedData = new (QByteArray);
+        QString currentPort;
+
+        foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
+        {
+            if( !QString::compare(info.manufacturer(), "Prolific", Qt::CaseInsensitive)  )
+            {
+                mySerialPort->setPort(info);
+                mySerialPort->setBaudRate(QSerialPort::Baud38400);
+                mySerialPort->setDataBits(QSerialPort::Data8);
+                mySerialPort->setParity(QSerialPort::NoParity);
+                mySerialPort->setStopBits(QSerialPort::OneStop);
+                mySerialPort->open(QIODevice::ReadWrite);
+
+                currentPort = info.portName();
+                roverConsoleLabels[4]->setText(roverConsoleLabels[4]->text() + currentPort);
+            }
+        }
 
 
 
@@ -158,7 +173,7 @@ public:
 
 
 
-        retranslateUi(Dialog);
+
 
 
 
@@ -169,11 +184,13 @@ public:
         Dialog->setWindowTitle(QApplication::translate("Dialog", "Dialog", 0));
         label->setText(QApplication::translate("Dialog", " GEAR SHIFTER", 0));
         setRRLabel->setText(QApplication::translate("Dialog", " ROV_RANGE LIMITER", 0));
-         roverDistlabel->setText(QApplication::translate("Dialog", "Distance from Rover =", 0));
-         roverConsoleLabels[0]->setText(QApplication::translate("Dialog", "Distance from Rover =", 0));
-         roverConsoleLabels[1]->setText(QApplication::translate("Dialog", "Distance from Obstacle =", 0));
-         roverConsoleLabels[2]->setText(QApplication::translate("Dialog", "Current Gear Setting =", 0));
-         roverConsoleLabels[3]->setText(QApplication::translate("Dialog", "Speed of Rover =", 0));
+
+         roverDistlabel->setText(QApplication::translate("Dialog", "Distance from Rover = ", 0));
+         roverConsoleLabels[0]->setText(QApplication::translate("Dialog", "Distance from Rover = ", 0));
+         roverConsoleLabels[1]->setText(QApplication::translate("Dialog", "Distance to Object = ", 0));
+         roverConsoleLabels[2]->setText(QApplication::translate("Dialog", "Current Gear Setting = ", 0));
+         roverConsoleLabels[3]->setText(QApplication::translate("Dialog", "Speed of Rover = ", 0));
+         roverConsoleLabels[4]->setText(QApplication::translate("Dialog", "Com Port Used  = ", 0));
     } // retranslateUi
 
 };
