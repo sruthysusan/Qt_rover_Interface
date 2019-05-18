@@ -111,7 +111,7 @@ public:
         steerLeft->setGeometry (QRect(400, 240, 40, 35));
 
         autoManual=new QPushButton("MANUAL",Dialog);
-        autoManual->setGeometry(QRect(400, 330, 60, 35));
+        autoManual->setGeometry(QRect(400, 330, 80, 35));
 
         goBtn=new QPushButton("ENABLE",Dialog);
         goBtn->setGeometry(QRect(620, 330, 100, 75));
@@ -162,17 +162,6 @@ public:
                 roverConsoleLabels[4]->setText(roverConsoleLabels[4]->text() + currentPort);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
